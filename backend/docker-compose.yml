@@ -4,7 +4,7 @@ services:
     backend:
         container_name: backend
         build:
-            context: /home/zhandos/PhpstormProjects/DiplomaWork/backend
+            context: .
             dockerfile: Dockerfile
         privileged: true
         restart: unless-stopped
@@ -20,7 +20,7 @@ services:
     frontend:
         container_name: frontend
         build:
-            context: /home/zhandos/PhpstormProjects/DiplomaWork/frontend
+            context: ../frontend
             dockerfile: ./public/Dockerfile
         ports:
             - '80:80'
