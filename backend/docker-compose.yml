@@ -29,7 +29,7 @@ services:
             - kolik-market-network
 
     webserver:
-        image: nginx
+        image: nginx:alpine
         depends_on:
             - backend
             - frontend
@@ -37,7 +37,7 @@ services:
         restart: unless-stopped
         tty: true
         ports:
-            - '8000:80'
+            - '8000:8000'
         volumes:
             - ./:/var/www/html/
             - ./nginx/:/etc/nginx/conf.d/

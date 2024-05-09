@@ -2,10 +2,8 @@ FROM php:8.2-fpm
 
 LABEL authors="saparbayevzh03@gmail.com"
 
-# Copy composer.lock and composer.json into the working directory
-COPY composer.lock composer.json /var/www/html/
+COPY ./ /var/www/html/
 
-# Set working directory
 WORKDIR /var/www/html/
 
 # Install packages
@@ -16,20 +14,13 @@ RUN apt update -yqq && apt install -y libfreetype6-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+# Install php extensions (modules) and composer
 RUN docker-php-ext-install pcntl intl opcache pdo pdo_pgsql pgsql mbstring zip exif gd \
     && docker-php-ext-enable opcache
 
-# Install composer (php package manager)
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Setting permissions
+RUN chown www-data:www-data -R /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Copy existing application directory contents to the working directory
-COPY . /var/www/html
-
-# Assign permissions of the working directory to the www-data user
-RUN chown -R www-data:www-data \
-    /var/www/html/storage \
-    /var/www/html/bootstrap/cache
-
-USER www-data:www-data
-
-CMD ["php-fpm", "-F"]
+ENTRYPOINT ["php-fpm", "-F"]
