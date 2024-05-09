@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+    backend:
+        container_name: backend
+        build:
+            context: /home/zhandos/PhpstormProjects/DiplomaWork/backend
+            dockerfile: Dockerfile
+        privileged: true
+        restart: unless-stopped
+        tty: true
+        environment:
+            SERVICE_NAME: backend
+            SERVICE_TAGS: dev
+        networks:
+            - kolik-market-network
+        volumes:
+            - ./:/var/www/html/
+
+    frontend:
+        container_name: frontend
+        build:
+            context: /home/zhandos/PhpstormProjects/DiplomaWork/frontend
+            dockerfile: ./public/Dockerfile
+        ports:
+            - '80:80'
+            - '443:443'
+        networks:
+            - kolik-market-network
+
+    webserver:
+        image: nginx
+        depends_on:
+            - backend
+            - frontend
+        container_name: webserver
+        restart: unless-stopped
+        tty: true
+        ports:
+            - '8000:80'
+        volumes:
+            - ./:/var/www/html/
+            - ./nginx/:/etc/nginx/conf.d/
+        networks:
+            - kolik-market-network
+
+networks:
+    kolik-market-network:
+        driver: bridge
+
+
