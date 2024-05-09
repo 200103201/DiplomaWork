@@ -1,24 +1,23 @@
 FROM php:8.2-fpm
 
+LABEL authors="saparbayevzh03@gmail.com"
+
 # Copy composer.lock and composer.json into the working directory
 COPY composer.lock composer.json /var/www/html/
-COPY .env.example .env
 
 # Set working directory
 WORKDIR /var/www/html/
 
-# Install dependencies for the operating system software
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpng-dev \
-    zip \
-    vim \
-    git \
-    curl
+# Install packages
+RUN apt update -yqq && apt install -y libfreetype6-dev \
+    curl g++ build-essential \
+    unzip libzip-dev lftp \
+    libicu-dev libpq-dev libonig-dev libaio1  \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Install extensions for php
-RUN docker-php-ext-install pdo_mysql
-RUN docker-php-ext-install gd
+RUN docker-php-ext-install pcntl intl opcache pdo pdo_pgsql pgsql mbstring zip exif gd \
+    && docker-php-ext-enable opcache
 
 # Install composer (php package manager)
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -31,12 +30,6 @@ RUN chown -R www-data:www-data \
     /var/www/html/storage \
     /var/www/html/bootstrap/cache
 
-
 USER www-data:www-data
 
-RUN composer install
-
-# Expose port 9000 and start php-fpm server (for FastCGI Process Manager)
-EXPOSE 9000
-
-CMD ["php-fpm"]
+CMD ["php-fpm", "-F"]
