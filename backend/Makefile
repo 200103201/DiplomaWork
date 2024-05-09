@@ -5,33 +5,33 @@ ENVIRONMENT_FILE=$(shell pwd)/.env
 PROJECT_DIRECTORY=$(shell pwd)
 
 build-project: composer-install check-env
-	- docker exec -ti kolik-market-api php artisan key:generate
-	- docker exec -ti kolik-market-api php artisan optimize:clear
-	- docker exec -ti kolik-market-api php artisan optimize
+	- docker exec -ti backend php artisan key:generate
+	- docker exec -ti backend php artisan optimize:clear
+	- docker exec -ti backend php artisan optimize
 
 composer-install:
-	- docker exec -ti kolik-market-api composer install
+	- docker exec -ti backend composer install
 
 optimize:
-	- docker exec -ti kolik-market-api php artisan optimize
+	- docker exec -ti backend php artisan optimize
 
 clean:
-	- docker exec -ti kolik-market-api php artisan optimize:clear
+	- docker exec -ti backend php artisan optimize:clear
 
 clean-dependencies:
 	- rm -rf vendor
 
 php-fixer:
-	- docker exec -ti kolik-market-api vendor/bin/pint
+	- docker exec -ti backend vendor/bin/pint
 
 swagger:
-	- docker exec -ti kolik-market-api php artisan l5-swagger:generate
+	- docker exec -ti backend php artisan l5-swagger:generate
 
 psalm:
-	- docker exec -ti kolik-market-api vendor/bin/psalm --no-cache
+	- docker exec -ti backend vendor/bin/psalm --no-cache
 
 config:
-	- docker exec -ti kolik-market-api php artisan config:cache
+	- docker exec -ti backend php artisan config:cache
 
 check-env:
 ifeq (,$(wildcard ./.env))
