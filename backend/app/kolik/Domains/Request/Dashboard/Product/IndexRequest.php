@@ -60,7 +60,7 @@ final class IndexRequest extends FormRequest
     {
         $category = $this->validated('category_id');
         $manufacturer = $this->validated('manufacturer_id');
-        $model = $this->validated('car_model_id');
+        $model = $this->validated('model_id');
         $generation = $this->validated('generation_id');
 
         return new IndexRequestDTO(
