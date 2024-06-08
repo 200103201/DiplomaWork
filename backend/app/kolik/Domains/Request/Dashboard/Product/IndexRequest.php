@@ -27,7 +27,7 @@ use Illuminate\Validation\Rules\Exists;
  *           example="3"
  *      ),
  *      @OA\Property(
- *           property="car_model_id",
+ *           property="model_id",
  *           type="integer",
  *           example="2"
  *      ),
@@ -50,7 +50,7 @@ final class IndexRequest extends FormRequest
         return [
             'category_id' => ['nullable', 'integer', new Exists(Category::class, 'category_id')],
             'manufacturer_id' => ['nullable', 'integer', new Exists(Manufacturer::class, 'manufacturer_id')],
-            'car_model_id' => ['nullable', 'integer', new Exists(CarModel::class, 'model_id')],
+            'model_id' => ['nullable', 'integer', new Exists(CarModel::class, 'model_id')],
             'generation_id' => ['nullable', 'integer', new Exists(ModelGeneration::class, 'generation_id')],
             'name' => ['nullable', 'string'],
         ];
