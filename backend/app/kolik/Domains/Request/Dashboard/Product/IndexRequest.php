@@ -6,7 +6,10 @@ namespace App\kolik\Domains\Request\Dashboard\Product;
 
 use App\Http\Requests\Request as FormRequest;
 use App\kolik\Domains\Core\DTO\Dashboard\Product\IndexRequestDTO;
+use App\Models\CarModel;
 use App\Models\Category;
+use App\Models\Manufacturer;
+use App\Models\ModelGeneration;
 use Illuminate\Validation\Rules\Exists;
 
 /**
@@ -46,9 +49,9 @@ final class IndexRequest extends FormRequest
     {
         return [
             'category_id' => ['nullable', 'integer', new Exists(Category::class, 'category_id')],
-            'manufacturer_id' => ['nullable', 'integer', new Exists(Category::class, 'manufacturer_id')],
-            'car_model_id' => ['nullable', 'integer', new Exists(Category::class, 'model_id')],
-            'generation_id' => ['nullable', 'integer', new Exists(Category::class, 'generation_id')],
+            'manufacturer_id' => ['nullable', 'integer', new Exists(Manufacturer::class, 'manufacturer_id')],
+            'car_model_id' => ['nullable', 'integer', new Exists(CarModel::class, 'model_id')],
+            'generation_id' => ['nullable', 'integer', new Exists(ModelGeneration::class, 'generation_id')],
             'name' => ['nullable', 'string'],
         ];
     }
