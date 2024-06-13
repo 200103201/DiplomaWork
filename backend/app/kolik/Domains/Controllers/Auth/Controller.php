@@ -14,10 +14,12 @@ use App\kolik\Support\Core\Exceptions\DomainException;
 use App\Mail\EmailVerification;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redirect;
 
 final class Controller extends BaseController
 {
@@ -174,14 +176,12 @@ final class Controller extends BaseController
         );
     }
 
-    public function verify(Request $request): JsonResponse
+    public function verify(Request $request): RedirectResponse
     {
         User::query()->where('email', $request->get('email'))->update([
             'email_verified_at' => now(),
         ]);
 
-        return $this->response(
-            'Email is successfully verified.'
-        );
+        return Redirect::to('http://45.55.47.238/login');
     }
 }
